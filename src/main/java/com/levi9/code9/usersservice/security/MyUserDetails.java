@@ -13,20 +13,23 @@ import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
+    private Long id;
     private String username;
     private String password;
     private boolean active;
     private List<GrantedAuthority> authorities;
 
     public MyUserDetails(UserEntity user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.active = user.isActive();
         this.authorities = Arrays.stream(user.getRole().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
-
     }
+
+    public Long getId() { return this.id; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

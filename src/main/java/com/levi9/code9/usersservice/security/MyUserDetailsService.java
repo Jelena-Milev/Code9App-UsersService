@@ -19,7 +19,6 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<UserEntity> user = userRepository.findByUsername(username);
-
         user.orElseThrow(() -> new UsernameNotFoundException("Wrong login credentials"));
         return user.map(MyUserDetails::new).get();
 

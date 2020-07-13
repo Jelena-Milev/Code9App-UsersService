@@ -49,8 +49,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/sign-up", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationRequest> register(@RequestBody final AuthenticationRequest authenticationRequest){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> register(@RequestBody final AuthenticationRequest authenticationRequest){
+        return new ResponseEntity<>("Sign up", HttpStatus.OK);
     }
 
     @PostMapping(path = "/sign-out", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
