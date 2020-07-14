@@ -6,8 +6,7 @@ import com.levi9.code9.usersservice.dto.AuthenticationResponse;
 import com.levi9.code9.usersservice.security.MyUserDetails;
 import com.levi9.code9.usersservice.security.MyUserDetailsService;
 import com.levi9.code9.usersservice.security.jwt.JwtUtil;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.levi9.code9.usersservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,13 +19,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("users")
 public class UserController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private final AuthenticationManager authenticationManager;
+    private final MyUserDetailsService myUserDetailsService;
+    private final UserService userService;
+    private final JwtUtil jwTokenUtil;
 
-    @Autowired
-    private JwtUtil jwTokenUtil;
+    public UserController(AuthenticationManager authenticationManager, MyUserDetailsService myUserDetailsService, UserService userService, JwtUtil jwTokenUtil) {
+        this.authenticationManager = authenticationManager;
+        this.myUserDetailsService = myUserDetailsService;
+        this.userService = userService;
+        this.jwTokenUtil = jwTokenUtil;
+    }
 
     @GetMapping(path = "/hello")
     public String hello(){
@@ -49,12 +52,13 @@ public class UserController {
     }
 
     @PostMapping(path = "/sign-up", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> register(@RequestBody final AuthenticationRequest authenticationRequest){
-        return new ResponseEntity<>("Sign up", HttpStatus.OK);
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody final AuthenticationRequest authenticationRequest){
+        final AuthenticationResponse response = userService.addNewUser(authenticationRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping(path = "/sign-out", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthenticationRequest> logout(@RequestBody final AuthenticationRequest authenticationRequest){
+    public ResponseEntity<AuthenticationRequest> logout(){
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

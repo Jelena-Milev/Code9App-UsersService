@@ -31,7 +31,6 @@ public class JwtUtil {
             SimpleGrantedAuthority grantedAuthority= new SimpleGrantedAuthority(authorityMap.get("authority").toString());
             authorities.add(grantedAuthority);
         }
-        System.out.println("authorities from token in util: "+authorities);
         return authorities;
     }
 
