@@ -31,11 +31,6 @@ public class UserController {
         this.jwTokenUtil = jwTokenUtil;
     }
 
-    @GetMapping(path = "/hello")
-    public String hello(){
-        return "Hello world";
-    }
-
     @PostMapping(path = "/sign-in", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthenticationResponse> login(@RequestBody final AuthenticationRequest authenticationRequest) throws Exception {
         final String username = authenticationRequest.getUsername();

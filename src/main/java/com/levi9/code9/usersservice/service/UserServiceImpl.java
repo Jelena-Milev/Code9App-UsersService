@@ -2,6 +2,7 @@ package com.levi9.code9.usersservice.service;
 
 import com.levi9.code9.usersservice.dto.AuthenticationRequest;
 import com.levi9.code9.usersservice.dto.AuthenticationResponse;
+import com.levi9.code9.usersservice.exception.UserAlreadyExistsException;
 import com.levi9.code9.usersservice.model.UserEntity;
 import com.levi9.code9.usersservice.repository.UserRepository;
 import com.levi9.code9.usersservice.security.MyUserDetails;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService{
     public AuthenticationResponse addNewUser(AuthenticationRequest request) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(request.getUsername());
         if(userEntity.isPresent()){
-            //throw new Exception - username already exists
+            throw new UserAlreadyExistsException("User already exists.");
         }
         UserEntity.UserEntityBuilder userEntityBuilder = UserEntity.builder();
         userEntityBuilder.username(request.getUsername())
